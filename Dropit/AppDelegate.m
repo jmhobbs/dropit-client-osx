@@ -24,12 +24,11 @@
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *password;
 
-@property (strong, nonatomic) SGDirWatchdog *observer;
-
-
 @property (strong, nonatomic) UploadController *uploadController;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (weak) IBOutlet NSWindow *window;
+
+@property (strong, nonatomic) ScreenshotAutoUploader *screenshotAutoUploader;
 
 @property (strong, nonatomic) DropitStatusBarItem *statusBarItem;
 
@@ -43,18 +42,7 @@
 
 @implementation AppDelegate
 
-// Dodgy as hell
-NSRegularExpression *screenShotRegex;
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    
-    if(! screenShotRegex) {
-        screenShotRegex = [NSRegularExpression
-         regularExpressionWithPattern:@"^Screen Shot [0-9]{4}-[0-9]{2}-[0-9]{2} at [0-9]+.[0-9]{2}.[0-9]{2} (AM|PM).(png|jpg)"
-         options:0
-         error:nil];
-    }
-    
     
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:16];
     _statusItem.title = nil;
@@ -68,42 +56,14 @@ NSRegularExpression *screenShotRegex;
     
     [_window close];
     
+    _screenshotAutoUploader = [[ScreenshotAutoUploader alloc] init];
+    _screenshotAutoUploader.delegate = self;
+    
     /*
-    if( ! [self loadConfig]) {
-        [self clicked:_statusBarItem];
-    }
+     if( ! [self loadConfig]) {
+     [self clicked:_statusBarItem];
+     }
      */
-    
-    // Initial enumeration of screenshots. Baseline.
-    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDesktopDirectory, NSUserDomainMask, YES);
-    NSString *desktopPath = [paths objectAtIndex:0];
-    
-    NSMutableSet *screenShots = [[NSMutableSet alloc] init];
-    for (NSString *fname in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:desktopPath error:NULL]) {
-        NSTextCheckingResult *match = [screenShotRegex firstMatchInString:fname options:0 range:NSMakeRange(0, [fname length])];
-        if(match) {
-            [screenShots addObject:fname];
-        }
-    }
-    _screenShotFilesOnDesktop = screenShots;
-    
-    _observer = [[SGDirWatchdog alloc] initWithPath:desktopPath  update:^{
-        NSMutableSet *screenShots = [[NSMutableSet alloc] init];
-        for (NSString *fname in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:desktopPath error:NULL]) {
-            NSTextCheckingResult *match = [screenShotRegex firstMatchInString:fname options:0 range:NSMakeRange(0, [fname length])];
-            if(match) {
-                [screenShots addObject:fname];
-            }
-        }
-        NSSet *ssCopy = [screenShots copy];
-        [screenShots minusSet:_screenShotFilesOnDesktop];
-        for (NSString *fname in screenShots) {
-            // TODO: Some kind of guard on ctime to prevent re-uploads
-            [_uploadController createUpload:[NSURL fileURLWithPathComponents:@[desktopPath, fname]]];
-        }
-        _screenShotFilesOnDesktop = ssCopy;
-    }];
-    [_observer start];
 }
 
 - (void)terminate:(id)sender {
@@ -188,6 +148,10 @@ NSRegularExpression *screenShotRegex;
 }
 
 - (void)fileDropped:(NSURL *)url {
+    [_uploadController createUpload:url];
+}
+
+- (void)newFileToUpload:(NSURL *)url {
     [_uploadController createUpload:url];
 }
 

@@ -30,6 +30,7 @@
 		05C108611ADD8D4C00477D15 /* drop_90.png in Resources */ = {isa = PBXBuildFile; fileRef = 05C108571ADD8D4C00477D15 /* drop_90.png */; };
 		05C108621ADD8D4C00477D15 /* drop_error.png in Resources */ = {isa = PBXBuildFile; fileRef = 05C108581ADD8D4C00477D15 /* drop_error.png */; };
 		05C108631ADD8D4C00477D15 /* drop_ok.png in Resources */ = {isa = PBXBuildFile; fileRef = 05C108591ADD8D4C00477D15 /* drop_ok.png */; };
+		05C1089F1AE1C3C000477D15 /* ScreenshotAutoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 05C1089E1AE1C3C000477D15 /* ScreenshotAutoUploader.m */; };
 		05C1E2111AD867360022936F /* ConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05C1E20F1AD867360022936F /* ConfigurationViewController.m */; };
 		05C1E2121AD867360022936F /* ConfigurationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05C1E2101AD867360022936F /* ConfigurationViewController.xib */; };
 		EFCB0CEB7F5399678CB57ACF /* libPods-Dropit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5069B131DE06623663ECC337 /* libPods-Dropit.a */; };
@@ -79,6 +80,8 @@
 		05C108571ADD8D4C00477D15 /* drop_90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drop_90.png; sourceTree = "<group>"; };
 		05C108581ADD8D4C00477D15 /* drop_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drop_error.png; sourceTree = "<group>"; };
 		05C108591ADD8D4C00477D15 /* drop_ok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drop_ok.png; sourceTree = "<group>"; };
+		05C1089D1AE1C3C000477D15 /* ScreenshotAutoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenshotAutoUploader.h; path = ../ScreenshotAutoUploader.h; sourceTree = "<group>"; };
+		05C1089E1AE1C3C000477D15 /* ScreenshotAutoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenshotAutoUploader.m; path = ../ScreenshotAutoUploader.m; sourceTree = "<group>"; };
 		05C1E20E1AD867360022936F /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
 		05C1E20F1AD867360022936F /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
 		05C1E2101AD867360022936F /* ConfigurationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfigurationViewController.xib; sourceTree = "<group>"; };
@@ -152,6 +155,8 @@
 				05C1E20E1AD867360022936F /* ConfigurationViewController.h */,
 				05C1E20F1AD867360022936F /* ConfigurationViewController.m */,
 				05C1E2101AD867360022936F /* ConfigurationViewController.xib */,
+				05C1089D1AE1C3C000477D15 /* ScreenshotAutoUploader.h */,
+				05C1089E1AE1C3C000477D15 /* ScreenshotAutoUploader.m */,
 			);
 			path = Dropit;
 			sourceTree = "<group>";
@@ -373,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05C1089F1AE1C3C000477D15 /* ScreenshotAutoUploader.m in Sources */,
 				05A0BD721AC2652E006A8686 /* main.m in Sources */,
 				051FF6631ACB139200230E5E /* DropListViewController.m in Sources */,
 				05C0005C1AD721F500122F14 /* Upload.m in Sources */,

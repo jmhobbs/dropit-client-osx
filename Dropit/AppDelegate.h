@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 #import "DropitStatusBarItem.h"
 #import "ConfigurationViewController.h"
+#import "ScreenshotAutoUploader.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, DropitStatusBarItemProtocol, ConfigurationViewControllerDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, DropitStatusBarItemProtocol, ConfigurationViewControllerDelegate, ScreenshotAutoUploaderDelegate>
 
 
 @end
