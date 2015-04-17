@@ -42,6 +42,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_Serialization 1
 
+// DirectoryWatchdog
+#define COCOAPODS_POD_AVAILABLE_DirectoryWatchdog
+#define COCOAPODS_VERSION_MAJOR_DirectoryWatchdog 1
+#define COCOAPODS_VERSION_MINOR_DirectoryWatchdog 1
+#define COCOAPODS_VERSION_PATCH_DirectoryWatchdog 0
+
 // PXListView
 #define COCOAPODS_POD_AVAILABLE_PXListView
 #define COCOAPODS_VERSION_MAJOR_PXListView 0

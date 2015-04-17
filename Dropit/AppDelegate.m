@@ -11,63 +11,161 @@
 #import "PopoverViewController.h"
 #import "Upload.h"
 #import "UploadController.h"
+#import <SGDirWatchdog.h>
+
+#define kAPIBase   @"DropitPrefsAPIBase"
+#define kUsername  @"DropitPrefsUsername"
+#define kPassword  @"DropitPrefsPassword"
+
 
 @interface AppDelegate ()
+
+@property (strong, nonatomic) NSString *apiBase;
+@property (strong, nonatomic) NSString *username;
+@property (strong, nonatomic) NSString *password;
+
+@property (strong, nonatomic) SGDirWatchdog *observer;
+
 
 @property (strong, nonatomic) UploadController *uploadController;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (weak) IBOutlet NSWindow *window;
+
 @property (strong, nonatomic) DropitStatusBarItem *statusBarItem;
+
+@property (strong, nonatomic) ConfigurationViewController *configViewController;
+
+@property (strong, nonatomic) NSPopover *popover;
+
+@property (strong, nonatomic) NSArray *filesOnDesktop;
 
 @end
 
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    _uploadController = [[UploadController alloc] init];
-    
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:16];
     _statusItem.title = nil;
     
     _statusBarItem = [[DropitStatusBarItem alloc] initWithFrame:_statusItem.view.frame];
     _statusBarItem.delegate = self;
     [_statusItem setView:_statusBarItem];
+
+    _uploadController = [[UploadController alloc] init];
+    _uploadController.statusBarItem = _statusBarItem;
     
     [_window close];
-}
-
-- (void)openConfig:(id)sender {
-    [NSApp activateIgnoringOtherApps:YES];
-    [_window makeKeyAndOrderFront:self];
+    
+    /*
+    if( ! [self loadConfig]) {
+        [self clicked:_statusBarItem];
+    }
+     */
+    
+    NSArray * paths = NSSearchPathForDirectoriesInDomains (NSDesktopDirectory, NSUserDomainMask, YES);
+    NSString *desktopPath = [paths objectAtIndex:0];
+    
+    _filesOnDesktop = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:desktopPath error:NULL];
+    
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:@"^Screen Shot [0-9]{4}-[0-9]{2}-[0-9]{2} at [0-9]+.[0-9]{2}.[0-9]{2} (AM|PM).(png|jpg)"
+                                  options:0
+                                  error:&error];
+    for (NSString *fname in _filesOnDesktop) {
+        NSTextCheckingResult *match = [regex firstMatchInString:fname options:0 range:NSMakeRange(0, [fname length])];
+        if(match) {
+            NSLog(@"%@", fname);
+        }
+    }
+    
+    _observer = [[SGDirWatchdog alloc] initWithPath:desktopPath  update:^{
+        NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:desktopPath error:NULL];
+        NSLog(@"%@", files);
+    }];
+    [_observer start];
 }
 
 - (void)terminate:(id)sender {
     [[NSApplication sharedApplication] terminate:self.statusItem.menu];
 }
 
-- (IBAction)saveConfig:(id)sender {
-//    _apiKey = [_apiKeyField stringValue]; 
-//    _serverDomain = [_serverDomainField stringValue];
-    
+- (bool)loadConfig {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-//    [prefs setObject:_apiKey forKey:kPrefsAPIKey];
-//    [prefs setObject:_serverDomain forKey:kPrefsServerDomain];
+    _apiBase = [prefs objectForKey:kAPIBase];
+    _username = [prefs objectForKey:kUsername];
+    _password = [prefs objectForKey:kPassword];
+    return (nil != _apiBase && nil != _username && nil != _password);
+}
+
+- (IBAction)saveConfig:(id)sender {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:_apiBase forKey:kAPIBase];
+    [prefs setObject:_username forKey:kUsername];
+    [prefs setObject:_password forKey:kPassword];
     [prefs synchronize];
 }
 
 - (void)clicked:(DropitStatusBarItem *)item {
+    [self doScreenshot];
+    
     /*
+     _configViewController = [[ConfigurationViewController alloc] initWithNibName:@"ConfigurationViewController" bundle:[NSBundle mainBundle]];
+     _configViewController.delegate = self;
+     
+     _popover = [[NSPopover alloc] init];
+     [_popover setContentSize:NSMakeSize(300.0f, 300.0f)];
+     [_popover setContentViewController:_configViewController];
+     [_popover setAnimates:YES];
+     [_popover setBehavior:NSPopoverBehaviorTransient];
+     [_popover showRelativeToRect:[item bounds] ofView:item preferredEdge:NSMaxYEdge];
+     */
+}
+
+- (void)doScreenshot {
+
+    NSString *tempFileTemplate =
+    [NSTemporaryDirectory() stringByAppendingPathComponent:@"Screen Shot _XXXXXX"];
+    const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
+    char *tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
+    strcpy(tempFileNameCString, tempFileTemplateCString);
+    int fileDescriptor = mkstemp(tempFileNameCString);
+    
+    if (fileDescriptor == -1) {
+        // handle file creation failure
+    }
+    
+    // This is the file name if you need to access the file by name, otherwise you can remove
+    // this line.
+    NSString *tempFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
+    free(tempFileNameCString);
+    
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/usr/sbin/screencapture";
+    task.arguments = @[@"-t", @"png", @"-is", tempFileName];
+    
+    [task setTerminationHandler:^(NSTask * task) {
+        NSLog(@"Task terminated. %d", task.terminationStatus);
+        if(task.terminationStatus == 0) {
+            [_uploadController createUpload:[NSURL fileURLWithPath:tempFileName] withMimeType:@"image/png" fileName:@"Screen-Shot.png"];
+            // TODO: Clean up after upload.
+        }
+        else {
+            NSError *error;
+            [[NSFileManager defaultManager] removeItemAtPath:tempFileName error:&error];
+            if (error.code != NSFileNoSuchFileError) {
+                NSLog(@"Error removing temporary screenshot file: %@", error);
+            }
+        }
+    }];
+    
+    [task launch];
+}
+
+- (void)loginTouchUp {
     PopoverViewController *vc = [[PopoverViewController alloc] initWithNibName:@"PopoverViewController" bundle:[NSBundle mainBundle]];
     vc.datasource = _uploadController;
-    
-    NSPopover *popover = [[NSPopover alloc] init];
-    [popover setContentSize:NSMakeSize(300.0f, 300.0f)];
-    [popover setContentViewController:vc];
-    [popover setAnimates:YES];
-    [popover setBehavior:NSPopoverBehaviorTransient];
-    [popover showRelativeToRect:[item bounds] ofView:item preferredEdge:NSMaxYEdge];
-     */
-
+    [_popover setContentViewController:vc];
 }
 
 - (void)fileDropped:(NSURL *)url {

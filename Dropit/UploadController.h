@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "PopoverViewController.h"
+#import "DropitStatusBarItem.h"
 
 @interface UploadController : NSObject <PopoverViewControllerDataSource>
 
+@property (strong, nonatomic) DropitStatusBarItem *statusBarItem;
+
 - (void)createUpload:(NSURL *)url;
+- (void)createUpload:(NSURL *)url withMimeType:(NSString *)mime fileName:(NSString *)fileName;
 
 @end

@@ -39,24 +39,30 @@
 }
 
 - (id)initWithURL:(NSURL *)fileURL {
+    // Yuck
+    NSString *filePath = [fileURL path];
+    NSArray *pathParts = [filePath componentsSeparatedByString:@"/"];
+    NSString *fileName = pathParts[[pathParts count]-1];
+    NSArray *filenameParts = [fileName componentsSeparatedByString:@"."];
+    NSString *extension = filenameParts[[filenameParts count]-1];
+
+    self = [self initWithURL:fileURL mimeType:[Upload mimeType:extension] fileName:fileName];
+    
+    return self;
+}
+
+- (id)initWithURL:(NSURL *)fileURL mimeType:(NSString *)mimeType fileName:(NSString *)fileName {
     self = [super init];
     
     if(self) {
-        NSString *filePath = [fileURL path];
-
-        // TODO: Yuck.
-        NSArray *pathParts = [filePath componentsSeparatedByString:@"/"];
-        NSString *fileName = pathParts[[pathParts count]-1];
-        NSArray *filenameParts = [fileName componentsSeparatedByString:@"."];
-        NSString *extension = filenameParts[[filenameParts count]-1];
-
         self.fileURL = fileURL;
         self.filename = fileName;
-        self.mimeType = [Upload mimeType:extension];
+        self.mimeType = mimeType;
         self.size = [Upload sizeInBytes:fileURL];
     }
     
     return self;
+    
 }
 
 - (void)changeState:(UploadState)state {
@@ -75,6 +81,8 @@
 
 - (void)start {
     [self changeState:UploadStateSigning];
+    
+    NSLog(@"Start: %@ : %@ : %@", _filename, _mimeType, _size);
     
     AFHTTPRequestOperationManager *manager = [self getAPIHTTPRequestManager];
     AFHTTPRequestOperation *sign = [manager POST:[NSString stringWithFormat:@"%@/upload/sign", DROPIT_SERVER]
@@ -115,8 +123,9 @@
 }
 
 - (void)upload:(NSString *)uploadURL params:(NSDictionary *)params {
-    
     [self changeState:UploadStateUploading];
+    
+    NSLog(@"Upload: %@ : %@ : %@", uploadURL, _filename, _mimeType);
     
     AFHTTPRequestOperationManager *s3Manager = [[AFHTTPRequestOperationManager alloc] init];
     AFHTTPRequestOperation *op = [s3Manager POST:uploadURL

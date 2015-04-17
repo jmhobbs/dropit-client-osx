@@ -8,6 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol ConfigurationViewControllerDelegate <NSObject>
+
+- (void)loginTouchUp;
+
+@end
+
 @interface ConfigurationViewController : NSViewController
+
+@property id<ConfigurationViewControllerDelegate> delegate;
 
 @end

@@ -6,6 +6,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'Dropit' do
 pod 'AFNetworking'
 pod 'PXListView'
+pod 'DirectoryWatchdog'
 end
 
 target 'DropitTests' do

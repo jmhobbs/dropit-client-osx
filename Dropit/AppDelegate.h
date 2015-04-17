@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DropitStatusBarItem.h"
+#import "ConfigurationViewController.h"
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, DropitStatusBarItemProtocol>
+@interface AppDelegate : NSObject <NSApplicationDelegate, DropitStatusBarItemProtocol, ConfigurationViewControllerDelegate>
 
 
 @end

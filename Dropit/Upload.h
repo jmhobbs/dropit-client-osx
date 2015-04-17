@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, UploadState) {
 @property (strong, nonatomic) NSString *directURL;
 
 - (id)initWithURL:(NSURL *)fileURL;
+- (id)initWithURL:(NSURL *)fileURL mimeType:(NSString *)mimeType fileName:(NSString *)fileName;
 - (void)start;
 
 @end
