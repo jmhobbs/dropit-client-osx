@@ -7,6 +7,7 @@ target 'Dropit' do
 pod 'AFNetworking'
 pod 'PXListView'
 pod 'DirectoryWatchdog'
+pod 'MASShortcut'
 end
 
 target 'DropitTests' do

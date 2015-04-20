@@ -23,9 +23,31 @@
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
-    if([self.delegate respondsToSelector:@selector(clicked:)]) {
-        [self.delegate clicked:self];
+    NSLog(@"%d", theEvent.type == NSRightMouseUp);
+
+    if(theEvent.modifierFlags|NSControlKeyMask) {
+        [self rightMouseUp:theEvent];
     }
+    else {
+        if([self.delegate respondsToSelector:@selector(clicked:)]) {
+            [self.delegate clicked:self];
+        }
+    }
+}
+
+- (void)rightMouseUp:(NSEvent *)theEvent {
+    NSMenu *menu = [[NSMenu alloc] init];
+    [menu addItemWithTitle:@"About" action:@selector(about) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Quit" action:@selector(quit) keyEquivalent:@""];
+    [NSMenu popUpContextMenu:menu withEvent:theEvent forView:self];
+}
+
+- (void)about {
+    NSLog(@"About");
+}
+
+- (void)quit {
+    NSLog(@"Quit");
 }
 
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {

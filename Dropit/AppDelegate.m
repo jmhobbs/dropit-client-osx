@@ -12,11 +12,13 @@
 #import "Upload.h"
 #import "UploadController.h"
 #import <SGDirWatchdog.h>
+#import <MASShortcut/Shortcut.h>
 
 #define kAPIBase   @"DropitPrefsAPIBase"
 #define kUsername  @"DropitPrefsUsername"
 #define kPassword  @"DropitPrefsPassword"
 
+static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotShortcut";
 
 @interface AppDelegate ()
 
@@ -59,11 +61,16 @@
     _screenshotAutoUploader = [[ScreenshotAutoUploader alloc] init];
     _screenshotAutoUploader.delegate = self;
     
-    /*
      if( ! [self loadConfig]) {
-     [self clicked:_statusBarItem];
+        [self clicked:_statusBarItem];
      }
-     */
+
+    MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:kVK_ANSI_5 modifierFlags:NSCommandKeyMask|NSShiftKeyMask];
+    [[MASShortcutBinder sharedBinder] registerDefaultShortcuts:@{kPreferenceGlobalScreenshotShortcut: shortcut}];
+    
+    [[MASShortcutBinder sharedBinder]
+     bindShortcutWithDefaultsKey:kPreferenceGlobalScreenshotShortcut
+     toAction:^{ [self doScreenshot]; }];
 }
 
 - (void)terminate:(id)sender {
@@ -87,9 +94,6 @@
 }
 
 - (void)clicked:(DropitStatusBarItem *)item {
-    [self doScreenshot];
-    
-    /*
      _configViewController = [[ConfigurationViewController alloc] initWithNibName:@"ConfigurationViewController" bundle:[NSBundle mainBundle]];
      _configViewController.delegate = self;
      
@@ -99,7 +103,6 @@
      [_popover setAnimates:YES];
      [_popover setBehavior:NSPopoverBehaviorTransient];
      [_popover showRelativeToRect:[item bounds] ofView:item preferredEdge:NSMaxYEdge];
-     */
 }
 
 - (void)doScreenshot {
