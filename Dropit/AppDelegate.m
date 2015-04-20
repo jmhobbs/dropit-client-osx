@@ -126,22 +126,37 @@ static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotS
     NSTask *task = [[NSTask alloc] init];
     task.launchPath = @"/usr/sbin/screencapture";
     task.arguments = @[@"-t", @"png", @"-is", tempFileName];
-    
+
     [task setTerminationHandler:^(NSTask * task) {
         if(task.terminationStatus == 0) {
-            [_uploadController createUpload:[NSURL fileURLWithPath:tempFileName] withMimeType:@"image/png" fileName:@"Screen-Shot.png"];
-            // TODO: Clean up after upload.
+            Upload *upload = [_uploadController createUpload:[NSURL fileURLWithPath:tempFileName] withMimeType:@"image/png" fileName:@"Screen-Shot.png"];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(tempFileUploadStateChanged:)
+                                                         name:UploadStateChangedNotification
+                                                       object:upload];
         }
         else {
             NSError *error;
             [[NSFileManager defaultManager] removeItemAtPath:tempFileName error:&error];
-            if (error.code != NSFileNoSuchFileError) {
+            if (error && error.code != NSFileNoSuchFileError) {
                 NSLog(@"Error removing temporary screenshot file: %@", error);
             }
         }
     }];
     
     [task launch];
+}
+
+- (void)tempFileUploadStateChanged:(NSNotification *) notification {
+    NSDictionary *userInfo = notification.userInfo;
+    if([userInfo[kUploadState] integerValue] == UploadStateComplete) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UploadStateChangedNotification object:[notification object]];
+        NSError *error;
+        [[NSFileManager defaultManager] removeItemAtPath:[((Upload *)notification.object).fileURL path] error:&error];
+        if (error && error.code != NSFileNoSuchFileError) {
+            NSLog(@"Error removing temporary screenshot file: %@", error);
+        }
+    }
 }
 
 - (void)loginTouchUp {

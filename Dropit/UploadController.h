@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) DropitStatusBarItem *statusBarItem;
 
-- (void)createUpload:(NSURL *)url;
-- (void)createUpload:(NSURL *)url withMimeType:(NSString *)mime fileName:(NSString *)fileName;
+- (Upload *)createUpload:(NSURL *)url;
+- (Upload *)createUpload:(NSURL *)url withMimeType:(NSString *)mime fileName:(NSString *)fileName;
 
 @end

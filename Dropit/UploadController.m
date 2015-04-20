@@ -23,7 +23,7 @@
     return self;
 }
 
-- (void)createUpload:(NSURL *)url {
+- (Upload *)createUpload:(NSURL *)url {
     [_statusBarItem setImage:[NSImage imageNamed:@"drop_0"]];
     
     Upload *upload = [[Upload alloc] initWithURL:url];
@@ -46,9 +46,11 @@
     
     [upload start];
     [_uploads addObject:upload];
+    
+    return upload;
 }
 
-- (void)createUpload:(NSURL *)url withMimeType:(NSString *)mime fileName:(NSString *)fileName {
+- (Upload *)createUpload:(NSURL *)url withMimeType:(NSString *)mime fileName:(NSString *)fileName {
     [_statusBarItem setImage:[NSImage imageNamed:@"drop_0"]];
     
     Upload *upload = [[Upload alloc] initWithURL:url mimeType:mime fileName:fileName];
@@ -71,6 +73,8 @@
     
     [upload start];
     [_uploads addObject:upload];
+    
+    return upload;
 }
 
 - (void)uploadCreated:(NSNotification *) notification {
