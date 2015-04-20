@@ -23,9 +23,7 @@
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
-    NSLog(@"%d", theEvent.type == NSRightMouseUp);
-
-    if(theEvent.modifierFlags|NSControlKeyMask) {
+    if(theEvent.modifierFlags & NSControlKeyMask) {
         [self rightMouseUp:theEvent];
     }
     else {
@@ -44,10 +42,11 @@
 
 - (void)about {
     NSLog(@"About");
+    // TODO
 }
 
 - (void)quit {
-    NSLog(@"Quit");
+    [[NSApplication sharedApplication] terminate:nil];
 }
 
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
