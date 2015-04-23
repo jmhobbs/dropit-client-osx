@@ -103,8 +103,6 @@
     NSNumber *progress = [userInfo objectForKey:kUploadProgress];
     float fprogress = [progress floatValue];
     
-    NSLog(@"%@ - %f", progress, fprogress);
-    
     if(fprogress < 0.1) {
         [_statusBarItem setImage:[NSImage imageNamed:@"drop_0"]];
     }

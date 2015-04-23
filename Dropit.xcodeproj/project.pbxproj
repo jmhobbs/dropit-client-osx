@@ -11,10 +11,12 @@
 		051FF65D1AC9E8CF00230E5E /* PopoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 051FF65B1AC9E8CF00230E5E /* PopoverViewController.xib */; };
 		051FF6631ACB139200230E5E /* DropListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 051FF6611ACB139200230E5E /* DropListViewController.m */; };
 		051FF6641ACB139200230E5E /* DropListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 051FF6621ACB139200230E5E /* DropListViewController.xib */; };
+		0543D0F31AE6A3A400607F58 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0543D0F21AE6A3A400607F58 /* MainMenu.xib */; };
+		0543D0F51AE6AECA00607F58 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0543D0F41AE6AECA00607F58 /* Security.framework */; };
+		0543D0F81AE6B0AC00607F58 /* ConfigurationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0543D0F71AE6B0AC00607F58 /* ConfigurationManager.m */; };
 		05A0BD701AC2652E006A8686 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 05A0BD6F1AC2652E006A8686 /* AppDelegate.m */; };
 		05A0BD721AC2652E006A8686 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 05A0BD711AC2652E006A8686 /* main.m */; };
 		05A0BD741AC2652E006A8686 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 05A0BD731AC2652E006A8686 /* Images.xcassets */; };
-		05A0BD771AC2652F006A8686 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 05A0BD751AC2652F006A8686 /* MainMenu.xib */; };
 		05A0BD831AC2652F006A8686 /* DropitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 05A0BD821AC2652F006A8686 /* DropitTests.m */; };
 		05A0BD941AC2809A006A8686 /* DropitStatusBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 05A0BD931AC2809A006A8686 /* DropitStatusBarItem.m */; };
 		05C0005C1AD721F500122F14 /* Upload.m in Sources */ = {isa = PBXBuildFile; fileRef = 05C0005B1AD721F500122F14 /* Upload.m */; };
@@ -53,13 +55,16 @@
 		051FF6601ACB139200230E5E /* DropListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropListViewController.h; sourceTree = "<group>"; };
 		051FF6611ACB139200230E5E /* DropListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropListViewController.m; sourceTree = "<group>"; };
 		051FF6621ACB139200230E5E /* DropListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropListViewController.xib; sourceTree = "<group>"; };
+		0543D0F21AE6A3A400607F58 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		0543D0F41AE6AECA00607F58 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0543D0F61AE6B0AC00607F58 /* ConfigurationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationManager.h; sourceTree = "<group>"; };
+		0543D0F71AE6B0AC00607F58 /* ConfigurationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationManager.m; sourceTree = "<group>"; };
 		05A0BD691AC2652E006A8686 /* Dropit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dropit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		05A0BD6D1AC2652E006A8686 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		05A0BD6E1AC2652E006A8686 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		05A0BD6F1AC2652E006A8686 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		05A0BD711AC2652E006A8686 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		05A0BD731AC2652E006A8686 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		05A0BD761AC2652F006A8686 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		05A0BD7C1AC2652F006A8686 /* DropitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		05A0BD811AC2652F006A8686 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		05A0BD821AC2652F006A8686 /* DropitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DropitTests.m; sourceTree = "<group>"; };
@@ -85,7 +90,6 @@
 		05C1E20E1AD867360022936F /* ConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationViewController.h; sourceTree = "<group>"; };
 		05C1E20F1AD867360022936F /* ConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationViewController.m; sourceTree = "<group>"; };
 		05C1E2101AD867360022936F /* ConfigurationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfigurationViewController.xib; sourceTree = "<group>"; };
-		05C1E2141AD868290022936F /* Configuration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../Configuration.h; sourceTree = "<group>"; };
 		3198A853D87787295E813639 /* Pods-Dropit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dropit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Dropit/Pods-Dropit.debug.xcconfig"; sourceTree = "<group>"; };
 		5069B131DE06623663ECC337 /* libPods-Dropit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Dropit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B008D2AD57AA9772C62CE17F /* Pods-Dropit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dropit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Dropit/Pods-Dropit.release.xcconfig"; sourceTree = "<group>"; };
@@ -96,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0543D0F51AE6AECA00607F58 /* Security.framework in Frameworks */,
 				EFCB0CEB7F5399678CB57ACF /* libPods-Dropit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,10 +141,12 @@
 			children = (
 				05A0BD6E1AC2652E006A8686 /* AppDelegate.h */,
 				05A0BD6F1AC2652E006A8686 /* AppDelegate.m */,
+				0543D0F61AE6B0AC00607F58 /* ConfigurationManager.h */,
+				0543D0F71AE6B0AC00607F58 /* ConfigurationManager.m */,
 				05A0BD921AC2809A006A8686 /* DropitStatusBarItem.h */,
 				05A0BD931AC2809A006A8686 /* DropitStatusBarItem.m */,
 				05A0BD731AC2652E006A8686 /* Images.xcassets */,
-				05A0BD751AC2652F006A8686 /* MainMenu.xib */,
+				0543D0F21AE6A3A400607F58 /* MainMenu.xib */,
 				05C0006B1AD82FEC00122F14 /* ikons */,
 				05A0BD6C1AC2652E006A8686 /* Supporting Files */,
 				051FF6591AC9E8CF00230E5E /* PopoverViewController.h */,
@@ -164,7 +171,6 @@
 		05A0BD6C1AC2652E006A8686 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				05C1E2141AD868290022936F /* Configuration.h */,
 				05A0BD6D1AC2652E006A8686 /* Info.plist */,
 				05A0BD711AC2652E006A8686 /* main.m */,
 			);
@@ -216,6 +222,7 @@
 		38A7AE2BA446B0B31F371A93 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0543D0F41AE6AECA00607F58 /* Security.framework */,
 				5069B131DE06623663ECC337 /* libPods-Dropit.a */,
 			);
 			name = Frameworks;
@@ -315,10 +322,10 @@
 				05C1085C1ADD8D4C00477D15 /* drop_25.png in Resources */,
 				05A0BD741AC2652E006A8686 /* Images.xcassets in Resources */,
 				05C108621ADD8D4C00477D15 /* drop_error.png in Resources */,
+				0543D0F31AE6A3A400607F58 /* MainMenu.xib in Resources */,
 				05C1085D1ADD8D4C00477D15 /* drop_40.png in Resources */,
 				05C1E2121AD867360022936F /* ConfigurationViewController.xib in Resources */,
 				05C108601ADD8D4C00477D15 /* drop_75.png in Resources */,
-				05A0BD771AC2652F006A8686 /* MainMenu.xib in Resources */,
 				05C1085B1ADD8D4C00477D15 /* drop_10.png in Resources */,
 				051FF6641ACB139200230E5E /* DropListViewController.xib in Resources */,
 				051FF65D1AC9E8CF00230E5E /* PopoverViewController.xib in Resources */,
@@ -384,6 +391,7 @@
 				05C0005C1AD721F500122F14 /* Upload.m in Sources */,
 				05A0BD701AC2652E006A8686 /* AppDelegate.m in Sources */,
 				051FF65C1AC9E8CF00230E5E /* PopoverViewController.m in Sources */,
+				0543D0F81AE6B0AC00607F58 /* ConfigurationManager.m in Sources */,
 				05C0006E1AD832F200122F14 /* UploadController.m in Sources */,
 				05A0BD941AC2809A006A8686 /* DropitStatusBarItem.m in Sources */,
 				05C1E2111AD867360022936F /* ConfigurationViewController.m in Sources */,
@@ -407,17 +415,6 @@
 			targetProxy = 05A0BD7D1AC2652F006A8686 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		05A0BD751AC2652F006A8686 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				05A0BD761AC2652F006A8686 /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		05A0BD841AC2652F006A8686 /* Debug */ = {

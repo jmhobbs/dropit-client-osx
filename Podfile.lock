@@ -20,17 +20,20 @@ PODS:
   - DirectoryWatchdog (1.1.0)
   - MASShortcut (2.1.2)
   - PXListView (0.0.1)
+  - UICKeyChainStore (2.0.4)
 
 DEPENDENCIES:
   - AFNetworking
   - DirectoryWatchdog
   - MASShortcut
   - PXListView
+  - UICKeyChainStore
 
 SPEC CHECKSUMS:
   AFNetworking: 10e85a00bb0f475124e4ff2677bf15693b2c1523
   DirectoryWatchdog: 85f0a92a52bc0d3d66346d80629227b44500506a
   MASShortcut: ef92b912469f9f6744dba5f0a906665c26de760c
   PXListView: 07b11b35c07629cdb17cd817da643bbbbf89c943
+  UICKeyChainStore: 69eb0c3a6f669bccf16ba88de3b9069b71501361
 
 COCOAPODS: 0.34.4

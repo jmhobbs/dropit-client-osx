@@ -7,7 +7,6 @@
 //
 
 #import "Upload.h"
-#import "Configuration.h"
 
 #import <sys/stat.h>
 #import <AFNetworking/AFNetworking.h>
@@ -85,7 +84,7 @@
     NSLog(@"Start: %@ : %@ : %@", _filename, _mimeType, _size);
     
     AFHTTPRequestOperationManager *manager = [self getAPIHTTPRequestManager];
-    AFHTTPRequestOperation *sign = [manager POST:[NSString stringWithFormat:@"%@/upload/sign", DROPIT_SERVER]
+    AFHTTPRequestOperation *sign = [manager POST:[NSString stringWithFormat:@"%@/api/upload/sign", DROPIT_SERVER]
                                       parameters:@{@"filename": _filename, @"content_type": _mimeType, @"size": _size}
                        constructingBodyWithBlock:nil
                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -169,7 +168,7 @@
     [self changeState:UploadStateCompleting];
     
     AFHTTPRequestOperationManager *manager = [self getAPIHTTPRequestManager];
-    AFHTTPRequestOperation *complete = [manager POST:[NSString stringWithFormat:@"%@/upload/complete", DROPIT_SERVER]
+    AFHTTPRequestOperation *complete = [manager POST:[NSString stringWithFormat:@"%@/api/upload/complete", DROPIT_SERVER]
                                              parameters:@{@"token": self.token}
                               constructingBodyWithBlock:nil
                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {

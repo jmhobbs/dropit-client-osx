@@ -10,7 +10,7 @@
 
 @protocol ConfigurationViewControllerDelegate <NSObject>
 
-- (void)loginTouchUp;
+- (void)loginSuccessful:(NSString *)host username:(NSString *)username password:(NSString *)password;
 
 @end
 

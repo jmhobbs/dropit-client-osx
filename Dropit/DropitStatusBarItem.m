@@ -62,10 +62,7 @@
 }
 
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
-    if([self.delegate respondsToSelector:@selector(fileDropped:)]) {
-        [self.delegate fileDropped:[NSURL URLFromPasteboard:[sender draggingPasteboard]]];
-    }
-    return YES;
+    return [self.delegate fileDropped:[NSURL URLFromPasteboard:[sender draggingPasteboard]]];
 }
 
 - (void)concludeDragOperation:(id<NSDraggingInfo>)sender {

@@ -13,7 +13,7 @@
 @protocol DropitStatusBarItemProtocol <NSObject>
 
 - (void)clicked:(DropitStatusBarItem *)item;
-- (void)fileDropped:(NSURL *)url;
+- (bool)fileDropped:(NSURL *)url;
 
 @end
 

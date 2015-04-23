@@ -11,8 +11,11 @@
 #import "PopoverViewController.h"
 #import "Upload.h"
 #import "UploadController.h"
+#import "ConfigurationManager.h"
 #import <SGDirWatchdog.h>
 #import <MASShortcut/Shortcut.h>
+#import <ServiceManagement/SMLoginItem.h>
+#import <UICKeyChainStore.h>
 
 #define kAPIBase   @"DropitPrefsAPIBase"
 #define kUsername  @"DropitPrefsUsername"
@@ -21,10 +24,6 @@
 static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotShortcut";
 
 @interface AppDelegate ()
-
-@property (strong, nonatomic) NSString *apiBase;
-@property (strong, nonatomic) NSString *username;
-@property (strong, nonatomic) NSString *password;
 
 @property (strong, nonatomic) UploadController *uploadController;
 @property (strong, nonatomic) NSStatusItem *statusItem;
@@ -56,14 +55,16 @@ static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotS
     _uploadController = [[UploadController alloc] init];
     _uploadController.statusBarItem = _statusBarItem;
     
-    [_window close];
+    if(![[ConfigurationManager instance] load]) {
+       [self clicked:_statusBarItem];
+    }
+
+    SMLoginItemSetEnabled((__bridge CFStringRef)@"org.velvetcache.Dropit", [ConfigurationManager instance].autostart);
     
-    _screenshotAutoUploader = [[ScreenshotAutoUploader alloc] init];
-    _screenshotAutoUploader.delegate = self;
-    
-     if( ! [self loadConfig]) {
-        [self clicked:_statusBarItem];
-     }
+    if([ConfigurationManager instance].uploadScreenshots) {
+        _screenshotAutoUploader = [[ScreenshotAutoUploader alloc] init];
+        _screenshotAutoUploader.delegate = self;
+    }
 
     MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:kVK_ANSI_5 modifierFlags:NSCommandKeyMask|NSShiftKeyMask];
     [[MASShortcutBinder sharedBinder] registerDefaultShortcuts:@{kPreferenceGlobalScreenshotShortcut: shortcut}];
@@ -77,36 +78,32 @@ static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotS
     [[NSApplication sharedApplication] terminate:self.statusItem.menu];
 }
 
-- (bool)loadConfig {
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    _apiBase = [prefs objectForKey:kAPIBase];
-    _username = [prefs objectForKey:kUsername];
-    _password = [prefs objectForKey:kPassword];
-    return (nil != _apiBase && nil != _username && nil != _password);
-}
-
-- (IBAction)saveConfig:(id)sender {
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:_apiBase forKey:kAPIBase];
-    [prefs setObject:_username forKey:kUsername];
-    [prefs setObject:_password forKey:kPassword];
-    [prefs synchronize];
-}
-
 - (void)clicked:(DropitStatusBarItem *)item {
-     _configViewController = [[ConfigurationViewController alloc] initWithNibName:@"ConfigurationViewController" bundle:[NSBundle mainBundle]];
-     _configViewController.delegate = self;
-     
-     _popover = [[NSPopover alloc] init];
-     [_popover setContentSize:NSMakeSize(300.0f, 300.0f)];
-     [_popover setContentViewController:_configViewController];
-     [_popover setAnimates:YES];
-     [_popover setBehavior:NSPopoverBehaviorTransient];
+    if( ! _popover) {
+        _popover = [[NSPopover alloc] init];
+        [_popover setContentSize:NSMakeSize(300.0f, 300.0f)];
+        [_popover setContentViewController:_configViewController];
+        [_popover setAnimates:YES];
+        [_popover setBehavior:NSPopoverBehaviorTransient];
+    }
+    
+    if(! [[ConfigurationManager instance] isLoggedIn]) {
+        _configViewController = [[ConfigurationViewController alloc] initWithNibName:@"ConfigurationViewController" bundle:[NSBundle mainBundle]];
+        _configViewController.delegate = self;
+        [_popover setContentViewController:_configViewController];
+    }
+    else {
+        PopoverViewController *vc = [[PopoverViewController alloc] initWithNibName:@"PopoverViewController" bundle:[NSBundle mainBundle]];
+        vc.datasource = _uploadController;
+        [_popover setContentViewController:vc];
+    }
+    
      [_popover showRelativeToRect:[item bounds] ofView:item preferredEdge:NSMaxYEdge];
 }
 
 - (void)doScreenshot {
-
+    if(! [[ConfigurationManager instance] isLoggedIn]) { return; }
+    
     NSString *tempFileTemplate =
     [NSTemporaryDirectory() stringByAppendingPathComponent:@"Screen Shot _XXXXXX"];
     const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
@@ -159,17 +156,30 @@ static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotS
     }
 }
 
-- (void)loginTouchUp {
-    PopoverViewController *vc = [[PopoverViewController alloc] initWithNibName:@"PopoverViewController" bundle:[NSBundle mainBundle]];
-    vc.datasource = _uploadController;
-    [_popover setContentViewController:vc];
+- (void)loginSuccessful:(NSString *)host username:(NSString *)username password:(NSString *)password {
+    ConfigurationManager *manager = [ConfigurationManager instance];
+    manager.server = host;
+    manager.username = username;
+    manager.password = password;
+    if([manager store]) {
+        PopoverViewController *vc = [[PopoverViewController alloc] initWithNibName:@"PopoverViewController" bundle:[NSBundle mainBundle]];
+        vc.datasource = _uploadController;
+        [_popover setContentViewController:vc];
+    }
+    else {
+        NSLog(@"Damn.");
+        // TODO
+    }
 }
 
-- (void)fileDropped:(NSURL *)url {
+- (bool)fileDropped:(NSURL *)url {
+    if(! [[ConfigurationManager instance] isLoggedIn]) { return NO; }
     [_uploadController createUpload:url];
+    return YES;
 }
 
 - (void)newFileToUpload:(NSURL *)url {
+    if(! [[ConfigurationManager instance] isLoggedIn]) { return; }
     [_uploadController createUpload:url];
 }
 

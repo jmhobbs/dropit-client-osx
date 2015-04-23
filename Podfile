@@ -8,6 +8,7 @@ pod 'AFNetworking'
 pod 'PXListView'
 pod 'DirectoryWatchdog'
 pod 'MASShortcut'
+pod 'UICKeyChainStore'
 end
 
 target 'DropitTests' do

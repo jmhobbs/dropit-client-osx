@@ -1,5 +1,5 @@
 #include "Pods-Dropit-MASShortcut.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/MASShortcut" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/DirectoryWatchdog" "${PODS_ROOT}/Headers/Public/MASShortcut" "${PODS_ROOT}/Headers/Public/PXListView"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/MASShortcut" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/DirectoryWatchdog" "${PODS_ROOT}/Headers/Public/MASShortcut" "${PODS_ROOT}/Headers/Public/PXListView" "${PODS_ROOT}/Headers/Public/UICKeyChainStore"
 OTHER_LDFLAGS = ${PODS_DROPIT_MASSHORTCUT_OTHER_LDFLAGS} -ObjC
 PODS_ROOT = ${SRCROOT}
