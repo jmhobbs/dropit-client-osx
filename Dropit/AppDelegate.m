@@ -45,6 +45,9 @@ static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotS
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     
+    [NSApp setServicesProvider:self];
+    NSUpdateDynamicServices();
+    
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:16];
     _statusItem.title = nil;
     
@@ -72,6 +75,21 @@ static NSString *const kPreferenceGlobalScreenshotShortcut = @"GlobalScreenshotS
     [[MASShortcutBinder sharedBinder]
      bindShortcutWithDefaultsKey:kPreferenceGlobalScreenshotShortcut
      toAction:^{ [self doScreenshot]; }];
+}
+
+- (void)handleServices:(NSPasteboard *)pboard
+              userData:(NSString *)userData
+                 error:(NSString **)error {
+    
+    if(! [[ConfigurationManager instance] isLoggedIn]) { return; }
+    
+    if([[pboard types] containsObject:NSFilenamesPboardType]){
+        NSArray* fileArray = [pboard propertyListForType:NSFilenamesPboardType];
+        // TODO: Groupped uploads
+        for (NSString *path in fileArray) {
+            [_uploadController createUpload:[NSURL fileURLWithPath:path]];
+        }
+    }
 }
 
 - (void)terminate:(id)sender {

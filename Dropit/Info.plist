@@ -30,6 +30,22 @@
 	<string>MainMenu</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSServices</key>
+	<array>
+		<dict>
+			<key>NSMessage</key>
+			<string>handleServices</string>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Upload To Dropit</string>
+			</dict>
+      <key>NSSendTypes</key>
+      <array>
+        <string>NSFilenamesPboardType</string>
+      </array>
+		</dict>
+	</array>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
