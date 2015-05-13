@@ -7,6 +7,7 @@
 //
 
 #import "Upload.h"
+#import "ConfigurationManager.h"
 
 #import <sys/stat.h>
 #import <AFNetworking/AFNetworking.h>
@@ -74,7 +75,8 @@
 - (AFHTTPRequestOperationManager *)getAPIHTTPRequestManager {
     AFHTTPRequestOperationManager *apiManager = [[AFHTTPRequestOperationManager alloc] init];
     apiManager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [apiManager.requestSerializer setAuthorizationHeaderFieldWithUsername:DROPIT_USERNAME password:DROPIT_PASSWORD];
+    ConfigurationManager *instance = [ConfigurationManager instance];
+    [apiManager.requestSerializer setAuthorizationHeaderFieldWithUsername:instance.username password:instance.password];
     return apiManager;
 }
 
@@ -84,7 +86,7 @@
     NSLog(@"Start: %@ : %@ : %@", _filename, _mimeType, _size);
     
     AFHTTPRequestOperationManager *manager = [self getAPIHTTPRequestManager];
-    AFHTTPRequestOperation *sign = [manager POST:[NSString stringWithFormat:@"%@/api/upload/sign", DROPIT_SERVER]
+    AFHTTPRequestOperation *sign = [manager POST:[NSString stringWithFormat:@"%@/api/upload/sign", [ConfigurationManager instance].server]
                                       parameters:@{@"filename": _filename, @"content_type": _mimeType, @"size": _size}
                        constructingBodyWithBlock:nil
                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -168,7 +170,7 @@
     [self changeState:UploadStateCompleting];
     
     AFHTTPRequestOperationManager *manager = [self getAPIHTTPRequestManager];
-    AFHTTPRequestOperation *complete = [manager POST:[NSString stringWithFormat:@"%@/api/upload/complete", DROPIT_SERVER]
+    AFHTTPRequestOperation *complete = [manager POST:[NSString stringWithFormat:@"%@/api/upload/complete", [ConfigurationManager instance].server]
                                              parameters:@{@"token": self.token}
                               constructingBodyWithBlock:nil
                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
